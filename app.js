@@ -5,6 +5,7 @@ if (location.protocol === 'maplelog:') {
   $('.header-right').innerHTML = '메이플로그 데스크톱 <span class="avatar">M</span>';
 }
 const STORAGE = 'maplelog.records.v1';
+window.MapleSystems = MapleBackup.systems(localStorage);
 const localDate = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 const today = localDate();
 let month = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
@@ -16,28 +17,15 @@ let toastTimer;
 const money = value => `${new Intl.NumberFormat('ko-KR').format(value)} 메소`;
 const compact = value => value >= 100000000 ? `${+(value / 100000000).toFixed(2)}억` : value >= 10000 ? `${+(value / 10000).toFixed(1)}만` : new Intl.NumberFormat('ko-KR').format(value);
 // 한국 메이플스토리 공식 보스 가이드 기준. 저장 형식은 기존의 '난이도 보스명'을 유지한다.
-const BOSS_CATALOG = [
-  ['스우', ['노멀', '하드', '익스트림']],
-  ['데미안', ['노멀', '하드']],
-  ['가디언 엔젤 슬라임', ['노멀', '카오스']],
-  ['루시드', ['이지', '노멀', '하드']],
-  ['윌', ['이지', '노멀', '하드']],
-  ['더스크', ['노멀', '카오스']],
-  ['진 힐라', ['노멀', '하드']],
-  ['친위대장 듄켈', ['노멀', '하드']],
-  ['검은 마법사', ['하드', '익스트림']],
-  ['선택받은 세렌', ['노멀', '하드', '익스트림']],
-  ['감시자 칼로스', ['이지', '노멀', '카오스', '익스트림']],
-  ['최초의 대적자', ['이지', '노멀', '하드', '익스트림']],
-  ['카링', ['이지', '노멀', '하드', '익스트림']],
-  ['벨로나', ['이지', '노멀', '하드']],
-  ['찬란한 흉성', ['노멀', '하드']],
-  ['림보', ['노멀', '하드']],
-  ['발드릭스', ['노멀', '하드']],
-  ['유피테르', ['노멀', '하드']]
-];
+const BOSS_CATALOG = MapleContent.catalog.bosses;
 const BOSS_ALIASES = { '듄켈': '친위대장 듄켈', '세렌': '선택받은 세렌', '칼로스': '감시자 칼로스', '반 레온': '반레온', '블러디 퀸': '블러디퀸' };
+let preservedBossName = '';
 function parseBoss(value) {
+  for (const [boss, difficulties] of BOSS_CATALOG) {
+    for (const difficulty of difficulties) {
+      if (value.trim() === `${difficulty} ${boss}`) return { boss, difficulty, custom: '' };
+    }
+  }
   const match = value.trim().match(/^(이지|노멀|노말|하드|카오스|익스트림)\s+(.+)$/);
   const name = match ? match[2] : value.trim();
   const boss = BOSS_ALIASES[name] || name;
@@ -253,7 +241,10 @@ $('#records').addEventListener('click', event => {
 });
 $('#export').onclick = () => {
   if (!storageReady) { toast('기록을 읽을 수 없어 백업을 만들지 못했어요.'); return; }
-  const url = URL.createObjectURL(new Blob([JSON.stringify({ app: 'maplelog', version: 2, exportedAt: new Date().toISOString(), records }, null, 2)], { type: 'application/json' }));
+  let backup;
+  try { backup = MapleBackup.create(localStorage, records); }
+  catch (error) { toast('저장된 시스템 데이터를 읽지 못해 백업을 만들지 못했어요.'); return; }
+  const url = URL.createObjectURL(new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }));
   const anchor = document.createElement('a'); anchor.href = url; anchor.download = `메이플로그-${today}.json`; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); toast('기록 백업을 다운로드했어요.');
 };
 $('#import').onclick = () => $('#import-file').click();
@@ -262,12 +253,20 @@ $('#import-file').addEventListener('change', async event => {
   try {
     if (file.size > 10000000) throw new Error('size');
     const data = JSON.parse(await file.text());
-    if (data.app !== 'maplelog' || ![1, 2].includes(data.version) || !Array.isArray(data.records) || data.records.length > 20000 || !data.records.every(validRecord) || new Set(data.records.map(r => r.id)).size !== data.records.length) throw new Error('format');
-    confirmAction('백업을 복원할까요?', `${data.records.length}개의 기록으로 현재 기록 전체를 교체합니다. 현재 기록이 필요하면 먼저 백업해주세요.`, () => {
-      const previous = storageReady; storageReady = true;
-      if (save(normalizeRecords(data.records))) { selectedDate = null; $('#search').value = ''; if (records.length) { const latest = records.map(r => r.date).sort().at(-1); month = new Date(`${latest.slice(0, 7)}-01T12:00:00`); } render(); toast('백업을 복원했어요.'); } else storageReady = previous;
+    const systems = MapleBackup.parse(data);
+    const diary = systems['boss-diary'];
+    if (diary) {
+      if (![1, 2].includes(diary.version) || !Array.isArray(diary.data) || diary.data.length > 20000 || !diary.data.every(validRecord) || new Set(diary.data.map(r => r.id)).size !== diary.data.length) throw new Error('format');
+      diary.data = normalizeRecords(diary.data); diary.version = 2;
+    }
+    const description = `${diary ? `보스 일기 ${diary.data.length}개와 ` : ''}백업에 포함된 시스템 데이터를 교체합니다. 파일에 없는 시스템은 그대로 유지합니다. 현재 데이터가 필요하면 먼저 백업해주세요.`;
+    confirmAction('백업을 복원할까요?', description, () => {
+      try { MapleBackup.restore(localStorage, systems); }
+      catch (error) { toast('백업을 저장하지 못했어요. 저장 공간과 기존 데이터를 확인해주세요.'); return; }
+      // Reload so every system reads the restored data, including systems added later.
+      location.reload();
     });
   } catch (error) { toast('유효한 메이플로그 백업 파일이 아니에요.'); }
 });
-window.addEventListener('storage', event => { if (event.key === STORAGE) { toast('다른 탭에서 기록이 변경됐어요. 새로고침 후 계속해주세요.'); storageReady = false; } });
+window.addEventListener('storage', event => { if (event.key === STORAGE || event.key === MapleBackup.SYSTEMS_STORAGE || event.key === null) { toast('다른 탭에서 데이터가 변경됐어요. 새로고침 후 계속해주세요.'); storageReady = false; } });
 render();

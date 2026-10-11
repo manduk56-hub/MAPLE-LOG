@@ -4,7 +4,8 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const source = fs.readFileSync(require('node:path').join(__dirname, '..', 'app.js'), 'utf8');
 const { BOSS_CATALOG, parseBoss, selectedBossName } = vm.runInNewContext(
-  source.slice(source.indexOf('const BOSS_CATALOG'), source.indexOf('const total =')) + '\n({BOSS_CATALOG,parseBoss,selectedBossName})'
+  source.slice(source.indexOf('const BOSS_ALIASES'), source.indexOf('const total =')) + '\n({BOSS_CATALOG,parseBoss,selectedBossName})',
+  { BOSS_CATALOG: JSON.parse(fs.readFileSync(require('node:path').join(__dirname, '..', 'content/catalog.json'), 'utf8')).bosses }
 );
 test('스우부터 시작하는 18종 보스는 중복 없이 각 난이도를 제공한다', () => {
   assert.equal(BOSS_CATALOG.length, 18);
