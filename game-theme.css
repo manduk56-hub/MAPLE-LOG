@@ -136,12 +136,18 @@ main{display:flex;flex-direction:column}main>header{flex:0 0 53px;width:100%;mar
 .item-row .item-price-hint { grid-column: 2; font-size: 13px; font-weight: 700; color: #7b652e; text-align: right; overflow-wrap: anywhere; line-height: 1.6; }
 .item-row .item-price-hint:empty { display: none; }
 .stat-icon.meso-stat { overflow: hidden; }
-/* Maple Auction palette with the bundled official MapleStory Light/Bold fonts. */
-:root{--border:#aeb9c3;--muted:#526271;--orange:#24b4cd;color:#303c48;font-family:'Malgun Gothic','Segoe UI',sans-serif;font-size:14px;line-height:1.5;font-synthesis:none}
+/* Noto Sans KR files served by Maple Auction, bundled for offline use. */
+@font-face{font-family:'Noto Sans KR';src:url('/assets/fonts/NotoSansKR-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Noto Sans KR';src:url('/assets/fonts/NotoSansKR-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Noto Sans KR';src:url('/assets/fonts/NotoSansKR-SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Noto Sans KR';src:url('/assets/fonts/NotoSansKR-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Noto Sans KR';src:url('/assets/fonts/NotoSansKR-ExtraBold.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'Noto Sans KR';src:url('/assets/fonts/NotoSansKR-Black.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap}
+:root{--border:#aeb9c3;--muted:#526271;--orange:#24b4cd;color:#303c48;font-family:'Noto Sans KR',system-ui,sans-serif;font-size:14px;line-height:1.5;font-synthesis:none}
 body{background:linear-gradient(#15232b66,#15232b66),url('/assets/maple-scene.jpg') center/cover fixed no-repeat}
 main,.sidebar{background:#272e35;border-color:#6c7c89;backdrop-filter:none;box-shadow:inset 0 0 0 1px #141b22,0 6px 20px #10182066}
 header,.modal-heading{background:linear-gradient(#313943,#252c33);border-bottom-color:#52606b;box-shadow:inset 0 1px #46535f}
-.brand{color:#edff00;font-size:24px;text-shadow:none}.brand-en{color:#c4d1da;font-size:11px;letter-spacing:1.5px}.logo{background:#323d47;border-color:#687987;box-shadow:none;color:#efff19;text-shadow:none}
+.brand{color:#edff00;font-size:24px;text-shadow:none}.brand-en{color:#c4d1da;font-size:11px;letter-spacing:1.5px}.logo{background:transparent;border-color:transparent;box-shadow:none;color:#efff19;text-shadow:none}.logo img{display:block;width:42px;height:42px;object-fit:contain}
 .nav-label,.local-label{color:#c6d3dc;font-size:12px}.nav-active{background:linear-gradient(#46c9df,#1ca4bf);border-color:#83d9e7;color:#fff;font-size:15px;text-shadow:none;box-shadow:inset 0 1px #9ce6f0}
 .breadcrumb{color:#e5edf2;font-size:14px}.breadcrumb span{color:#a6b7c5}.header-right{color:#c2d4df;font-size:12px}.avatar{background:#34434e;color:#edff00;border-color:#69808e;box-shadow:none}
 .diary-scroll{background:#303a43;scrollbar-color:#788a97 #263039}.diary-scroll::-webkit-scrollbar-track{background:#263039}.diary-scroll::-webkit-scrollbar-thumb{background:#788a97;border-color:#263039}
@@ -163,3 +169,118 @@ dialog{background:#e8edf1;color:#303c48;border:1px solid #738896;box-shadow:0 15
 .confirm-body p{color:#3c5466;font-size:14px}.text-button{color:#385a71;font-size:13px}footer{border-color:#576773;color:#cad7e0;font-size:12px}.asset-credit{color:#b4c5d0}footer .text-button{color:#e2edf3;font-size:12px}#toast{background:#fff;border-color:#4c849c;color:#274d62;font-size:14px}
 @media(max-width:650px){.brand{font-size:20px}.local-label{font-size:10px}.summary article{padding:12px 8px}.summary p{font-size:11px}.summary strong{font-size:20px}.summary small{font-size:10px}.record-actions .primary{font-size:12px}.empty-state h3{font-size:21px}.empty-state p{font-size:13px}.item-heading{align-items:flex-start;gap:10px}.item-heading span{max-width:145px;line-height:1.5}.calendar button{font-size:15px}.header-right{font-size:0}.header-right .avatar{font-size:12px}}
 .meso-stat img { width: 35px; height: 35px; object-fit: contain; display: block; image-rendering: pixelated; }
+.loot-price{font-size:13px;font-weight:700;line-height:18px}
+
+/* Item information window: dark body, white values, lime and cyan highlights.
+   Accent colors follow Maple Auction's item-tooltip option tokens. */
+.record-card{background:#2e343c;border:1px solid #4c6370;border-radius:10px;color:#f3f6f8;box-shadow:inset 0 1px #62748033;padding:16px}
+.card-heading{padding-bottom:12px;border-bottom:1px solid #43525c;background:linear-gradient(#43586566,transparent);margin:-16px -16px 12px;padding:14px 16px 12px;border-radius:9px 9px 0 0}
+.record-date{color:#b1b9c3;font-size:12px}.record-card h3{color:#fff;font-size:18px;font-weight:700;letter-spacing:.3px;margin:5px 0 0}.card-actions button{color:#d3e1e8;font-size:12px}
+.card-party{color:#b1b9c3;font-size:12px}.character-tag{background:#46525e;border-color:#667786;color:#f3f6f8;font-size:12px;box-shadow:none}
+.loot-list{border:1px solid #44545f;border-radius:5px;background:#2e343c}.loot-heading{background:#252c33;color:#b1b9c3;font-size:12px;font-weight:500;border-color:#44545f}.loot-heading>span:last-child{border-color:#44545f}
+.loot-row{background:#303841;border-color:#43525c;font-size:13px}.loot-row:hover{background:#36434d}.loot-name{color:#f5f7fa;font-weight:500;font-size:13px;line-height:1.6}.loot-price{color:#fff;font-size:13px;font-weight:700;border-color:#43525c;font-variant-numeric:tabular-nums}.loot-gem{background:linear-gradient(#748491,#53616c);border-color:#9eacb5;color:#5bd4ff;border-radius:4px;box-shadow:inset 0 0 0 1px #414d57}
+.card-totals{color:#b1b9c3;font-size:12px;line-height:1.8;gap:12px}.card-totals strong{font-size:14px;font-weight:700;white-space:normal}.card-totals>span:first-child strong{color:#ccff00}.card-totals>span:last-child strong{color:#0bdea9}.record-memo{background:#252c33;border:1px solid #43525c;color:#c9d2da;font-size:12px;line-height:1.8;border-radius:5px}
+.empty-state{background:linear-gradient(#394b58,#2e343c);border-color:#536b7b;border-radius:8px}.empty-state h3{color:#fff;text-shadow:none;font-size:21px}.empty-state p{color:#c8d3dc}.empty-state button{background:#314f5f;color:#5bd4ff;border-color:#527c92;box-shadow:none}
+dialog{background:#2e343c;border-color:#526a79;color:#f3f6f8;box-shadow:inset 0 1px #637e8c44,0 15px 45px #0b182777;border-radius:10px}.modal-heading{background:linear-gradient(#435965,#2e343c);border-color:#43545e;border-radius:9px 9px 0 0;box-shadow:inset 0 1px #6d849255}.modal-heading h2{color:#fff;font-size:20px}.modal-heading .eyebrow{color:#b1b9c3}
+.form-grid label,.full-label{color:#d8e0e5;font-size:13px}.optional{color:#b1b9c3}.form-grid input,.full-label input,textarea,.item-row input{background:#242c33;color:#fff;border-color:#607482;font-size:14px;box-shadow:inset 0 1px 2px #141a2044}#record-form input::placeholder,#record-form textarea::placeholder{color:#aebbc5}
+#record-form .boss-field{background:#354752;border-color:#607d8e;color:#5bd4ff}#record-form .form-grid select{background:#242c33;color:#fff;border-color:#607482}#record-form .form-grid select:has(option[value=""]:checked){color:#c0cbd4}#record-form .form-grid select:not(:has(option[value=""]:checked)){background:#263c48;border-color:#5bd4ff}#record-form .form-grid select option{background:#2e343c;color:#fff}#record-form .form-grid select:disabled{background:#333d46;color:#aebbc5;border-color:#526370}
+.item-heading{border-bottom:1px solid #43545e;padding-bottom:10px}.item-heading h3{color:#ccff00;font-size:15px}.item-heading span,.item-row label{color:#b1b9c3;font-size:12px}.item-row .item-price-hint{color:#0bdea9;font-size:14px}.remove-item{color:#bfcbd4}.add-item{background:#35434e;border-color:#617988;color:#5bd4ff;font-size:13px}.form-total{background:#242c33;border-color:#4d6270;color:#b1b9c3;font-size:12px}.form-total strong{color:#ccff00;font-size:15px}.form-total>span:last-child strong{color:#0bdea9}
+.year-picker{background:#242c33;border-color:#526a79}.year-picker label,.month-picker-hint{color:#c9d5de}.year-picker input{background:#35434e;color:#fff;border-color:#617988}.month-picker-grid button{background:#35434e;color:#fff;border-color:#617988}.month-picker-grid button:hover{background:#405969}.month-picker-grid button.active{background:#244c5d;color:#5bd4ff;border-color:#5bd4ff}.confirm-body p{color:#c9d5de}.loot-name.optional{color:#b1b9c3;font-weight:400}
+#record-form input,#record-form select,#record-form textarea,.year-picker input{color-scheme:dark}
+
+/* Settings read from local UIToolTip.img: Dotum title, Gulim body and original colors. */
+.record-card,#record-form{font-family:Gulim,'굴림','Noto Sans KR',sans-serif;font-size:12px}
+.record-card{background:#2e353d}.record-card h3,.loot-name,.modal-heading h2{font-family:Dotum,'돋움','Noto Sans KR',sans-serif;font-weight:700}.loot-name{font-size:14px}.record-memo{font-size:12px}.card-totals>span:first-child strong,.form-total strong,.item-heading h3{color:#ccff00}.card-totals>span:last-child strong,.form-total>span:last-child strong,.item-row .item-price-hint{color:#66ffff}.loot-gem,#record-form .boss-field{color:#66ffff}
+.summary{grid-template-columns:minmax(145px,.8fr) minmax(145px,.8fr) minmax(0,1.6fr)}.summary article>div{min-width:0}.summary .amount-stat{padding-top:24px}.summary #stat-value{display:block;font-size:19px;line-height:1.55;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;letter-spacing:0}
+.stat-icon.boss-stat{display:grid;place-items:center;overflow:hidden;flex:0 0 43px;width:43px;height:43px}.boss-stat img{display:block;width:38px;height:38px;object-fit:contain;image-rendering:pixelated}
+.income-section{margin:0 0 18px;padding:14px;background:#252d35;border:1px solid #536773;border-radius:7px}.income-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.income-heading h2{font-size:15px;color:#fff}.income-heading label{display:flex;align-items:center;gap:8px;font-size:12px;color:#b7bfc5}.income-heading select{background:#354650;color:#fff;border:1px solid #647d8c;border-radius:4px;padding:6px;font-size:12px;color-scheme:dark}.income-summary{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}.income-summary article{min-width:0;background:#2e353d;border:1px solid #506672;border-radius:6px;padding:13px}.income-summary p{color:#d2dde5;font-size:13px;margin:0 0 5px}.income-summary strong{display:block;color:#ccff00;font-size:20px;line-height:1.6;font-weight:700;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.income-summary article:last-child strong{color:#66ffff}.income-summary article>span{display:block;color:#b7bfc5;font-size:12px;margin-top:5px;line-height:1.6}.income-tip{color:#bccbd5;font-size:12px;margin:10px 0 0;line-height:1.6}
+@media(max-width:650px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.summary .amount-stat{grid-column:1/-1;padding:14px;min-height:82px}.summary #stat-value{font-size:18px}.summary .stat-icon.boss-stat{display:grid}.income-heading{flex-wrap:wrap}.income-summary{grid-template-columns:minmax(0,1fr)}.income-summary strong{font-size:18px}.income-section{padding:12px}.summary .stat-icon.meso-stat{display:grid;flex-shrink:0}}
+.income-summary{grid-template-columns:repeat(3,minmax(0,1fr))}.income-summary article:nth-child(2) strong{color:#66ffff}.income-summary article:nth-child(3) strong{color:#ffcc00}@media(max-width:850px){.income-summary{grid-template-columns:minmax(0,1fr)}}
+.summary article,.summary .amount-stat{padding:15px;align-items:center;min-height:96px}
+.summary article>div{display:grid;grid-template-rows:20px minmax(32px,auto);row-gap:4px;align-content:center}
+.summary p{margin:0;line-height:20px}.summary strong,.summary #stat-value{font-size:22px;line-height:32px;align-self:start}
+.summary .stat-icon{flex-shrink:0}.summary .stat-hint{top:7px;font-size:10px}
+.stat-icon.item-stat{display:grid;place-items:center;width:43px;height:43px;flex:0 0 43px}.item-stat img{display:block;width:30px;height:30px;object-fit:contain;image-rendering:pixelated}
+@media(max-width:650px){.summary article,.summary .amount-stat{padding:12px;min-height:88px}.summary p{font-size:11px}.summary strong,.summary #stat-value{font-size:19px}}
+/* Clear amount text, shared by price inputs and split totals. */
+#record-form .item-price,#record-form .item-price-hint,#record-form .form-total strong{font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;line-height:1.6;letter-spacing:0;text-shadow:none;font-variant-numeric:tabular-nums}
+#record-form .item-price{background:#202932;color:#fff;border-color:#849bab;padding:10px 12px}
+#record-form .item-price-hint,#record-form .form-total>span:last-child strong{color:#7fffff}
+#record-form .form-total>span{color:#e0e8ef;font-family:'Noto Sans KR',sans-serif;font-size:13px}
+#record-form .item-row label,#record-form .item-heading span{color:#d4dee8}
+
+/* Adjacent months recede into the calendar background. */
+.calendar button.other-month{background:linear-gradient(#f6f8fae6,#f6f8fae6),var(--heat);color:#97a4af;border-color:#e1e7ec;font-weight:400;box-shadow:none;opacity:1}
+.calendar button.other-month:hover{background:linear-gradient(#eef2f6d9,#eef2f6d9),var(--heat);color:#718391;border-color:#c4d0da;filter:none}
+.calendar button.other-month.is-today{box-shadow:inset 0 0 0 1px #008ca9}
+
+/* Make the selected-day filter and return action easy to find. */
+.month-all-button{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;min-height:38px;padding:8px 14px;border:1px solid #ba872c;border-radius:5px;background:#ffcf70;color:#283d4c;font-size:13px;font-weight:700;box-shadow:inset 0 1px #fff2cc}
+.month-all-button:hover{background:#ffdc93;filter:none}.month-all-button:focus-visible{outline:3px solid #167c9d;outline-offset:3px}
+
+.income-fee-note{margin:0 0 12px;color:#d9eef5;font-size:13px;line-height:1.7}
+
+/* Compact diary cards: fewer dividers and repeated headings. */
+.compact-record{padding:12px 14px;border-radius:7px;margin-bottom:10px}
+.compact-record .card-heading{margin:0;padding:0;border:0;border-radius:0;background:none;align-items:center;gap:12px}
+.compact-record .record-title{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px;min-width:0}
+.compact-record h3{margin:0;font-size:16px;line-height:1.5;overflow-wrap:anywhere}
+.compact-record .record-date{font-size:11px;white-space:nowrap;color:#aab8c4}
+.compact-record .card-actions{flex-shrink:0;gap:6px}
+.compact-record .card-actions button{padding:4px 5px;font-size:11px;color:#becbd5}
+.compact-record .card-party{display:inline-flex;align-items:baseline;gap:8px;margin:0;min-width:0;max-width:100%;font-size:11px;line-height:1.5}
+.compact-record .character-tag{margin:0;padding:2px 6px;font-size:12px;font-weight:700;flex-shrink:0;color:#ffe178;background:#3d4147;border-color:#9b8750;text-shadow:none}
+.compact-record .party-names{min-width:0;overflow-wrap:anywhere;color:#a8ed9b;font-size:12px;font-weight:600;text-shadow:none}
+.compact-record .loot-list{margin:9px 0 7px;border:0;border-radius:0;background:none;overflow:visible}
+.compact-record .loot-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 14px;padding:7px 10px;border:0;border-radius:4px;background:#252e36;box-shadow:none}
+.compact-record .loot-row + .loot-row{margin-top:4px}
+.compact-record .loot-name{padding:0;font-size:13px;line-height:1.5}
+.compact-record .loot-price{padding:0;border:0;font-size:13px;line-height:1.5;text-align:right;white-space:normal}
+.compact-record .loot-row>.loot-name:only-child{grid-column:1/-1;padding:0}
+.compact-record .card-totals{gap:5px 12px;align-items:baseline;font-size:11px;line-height:1.6}
+.compact-record .card-totals strong{font-size:13px;margin-left:5px}
+.compact-record .card-share{margin-left:auto;text-align:right}
+.compact-record .card-share strong{color:#66ffff}
+.compact-record .record-memo{margin:8px 0 0;padding:7px 10px;font-size:12px}
+@media(max-width:650px){.compact-record{padding:11px}.compact-record .record-title{gap:3px 8px}.compact-record .loot-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}}
+
+.calendar-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}.panel-top .month-all-button{min-height:28px;padding:4px 8px;font-size:11px;line-height:18px}.calendar-actions #today{min-height:28px;line-height:18px}.panel-top .month-all-button:disabled{background:#d9e1e6;border-color:#adbec9;color:#637684;box-shadow:none;cursor:default;filter:none}
+
+/* Single-column cards share one heading row for boss, date and party. */
+.records-panel{min-width:0}
+#records{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;align-content:start}
+#records>.compact-record{min-width:0;margin:0}
+#records>.empty-state{grid-column:1/-1}
+.compact-record .loot-name,.compact-record .loot-price,.compact-record .record-memo{overflow-wrap:anywhere}
+
+#confirm-dialog.destructive-confirm #confirm-title{color:#ff6b6b;font-weight:800;text-shadow:none}
+
+.month-nav{display:flex;align-items:center;gap:2px}
+.calendar-nav-arrows{display:flex;align-items:center;flex-shrink:0}
+.calendar-nav-arrows .icon-button{width:25px;min-width:25px;height:32px;padding:0;font-size:23px;line-height:1}
+.month-nav .month-picker-trigger{flex:1;min-width:0;padding:5px 0;white-space:nowrap;font-size:16px}
+
+/* Match item field heights and gently mark required fields. */
+#record-form .item-row input{box-sizing:border-box;height:44px;margin-top:4px;padding:10px 12px}
+#record-form .item-row label{line-height:1.5}
+#record-form input[required]:not(:disabled),#record-form select[required]:not(:disabled){border-color:#91bac9;box-shadow:0 0 0 1px #83c5dc30}
+#record-form input[required]:not(:disabled):focus,#record-form select[required]:not(:disabled):focus{border-color:#66d8f3;outline:2px solid #66d8f35c;outline-offset:1px}
+
+#record-form .form-grid .boss-field{font-family:'Noto Sans KR',sans-serif;text-shadow:none}
+#record-form .form-grid .boss-field select{font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:600;line-height:1.5;letter-spacing:0;color:#fff;text-shadow:none}
+#record-form .form-grid .boss-field select:has(option[value=""]:checked){color:#d8e4ec;font-weight:500}
+#record-form .form-grid .boss-field select option,#record-form .form-grid .boss-field select optgroup{font-family:'Noto Sans KR',sans-serif;color:#fff;text-shadow:none}
+
+#record-form .modal-heading #editor-title{font-family:'Noto Sans KR',sans-serif;font-weight:600;letter-spacing:0;color:#fff;text-shadow:none}
+
+/* Use the bundled scalable font consistently for readable UI text. */
+body,button,input,select,textarea,.record-card,#record-form{font-family:'Noto Sans KR',sans-serif}
+body *{text-shadow:none!important}
+.record-card h3,.loot-name,.modal-heading h2,.confirm-body h2,.panel-top h2,.records-top h2,.month-picker-trigger{font-family:'Noto Sans KR',sans-serif;letter-spacing:0}
+#record-form input,#record-form select,#record-form textarea{font-family:'Noto Sans KR',sans-serif;font-weight:500;letter-spacing:0}
+#record-form .form-grid label,#record-form .full-label,#record-form .item-row label{font-weight:500}
+#record-form input::placeholder,#record-form textarea::placeholder{color:#bdcbd5;font-weight:400}
+.compact-record .record-date,.compact-record .card-actions button,.compact-record .card-totals{font-size:12px}
+.records-top p,.calendar-tip p,.local-label,.income-tip,.income-summary article>span{font-size:12px}
+.compact-record .card-actions button{color:#d5e0e8}
+.compact-record .record-date{color:#c2cdd7}

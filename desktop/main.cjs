@@ -19,9 +19,13 @@ else {
   });
   app.whenReady().then(async () => {
     const allowedFiles = { '/': 'index.html', '/index.html': 'index.html', '/app.js': 'app.js', '/style.css': 'style.css', '/game-theme.css': 'game-theme.css', '/maple-theme.css': 'maple-theme.css', '/assets/maple-autumn.jpg': 'assets/maple-autumn.jpg', '/assets/maple-scene.jpg': 'assets/maple-scene.jpg', '/assets/maple-character.png': 'assets/maple-character.png', '/assets/meso.png': 'assets/meso.png', '/assets/fonts/Maplestory-Light.ttf': 'assets/fonts/Maplestory-Light.ttf', '/assets/fonts/Maplestory-Bold.ttf': 'assets/fonts/Maplestory-Bold.ttf' };
+    for (const weight of ['Regular', 'Medium', 'SemiBold', 'Bold', 'ExtraBold', 'Black']) allowedFiles[`/assets/fonts/NotoSansKR-${weight}.woff2`] = `assets/fonts/NotoSansKR-${weight}.woff2`;
+    allowedFiles['/assets/boss-count.png'] = 'assets/boss-count.png';
+    allowedFiles['/assets/item-count.png'] = 'assets/item-count.png';
+    allowedFiles['/assets/maplelog-icon.png'] = 'assets/maplelog-icon.png';
     allowedFiles['/content.js'] = 'content.js';
     allowedFiles['/backup.js'] = 'backup.js';
-    const types = { '.json': 'application/json', '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.jpg': 'image/jpeg', '.png': 'image/png', '.ttf': 'font/ttf' };
+    const types = { '.json': 'application/json', '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.jpg': 'image/jpeg', '.png': 'image/png', '.ttf': 'font/ttf', '.woff2': 'font/woff2' };
     protocol.handle('maplelog', async request => {
       const url = new URL(request.url);
       const file = url.hostname === 'app' && allowedFiles[url.pathname];
@@ -45,7 +49,7 @@ else {
       width: Math.max(860, Math.min(1800, Number(state.width) || 1280)),
       height: Math.max(640, Math.min(1200, Number(state.height) || 860)),
       minWidth: 780, minHeight: 600, title: '메이플로그',
-      icon: path.join(app.getAppPath(), 'assets', 'icon.ico'),
+      icon: path.join(app.getAppPath(), 'assets', 'maplelog-icon.ico'),
       backgroundColor: '#f6f5ef', show: true, autoHideMenuBar: true,
       webPreferences: { nodeIntegration: false, contextIsolation: true, sandbox: true, devTools: !app.isPackaged }
     });

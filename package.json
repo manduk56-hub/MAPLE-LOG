@@ -41,7 +41,7 @@
       "content/**"
     ],
     "win": {
-      "icon": "assets/icon.ico",
+      "icon": "assets/maplelog-icon.ico",
       "target": "nsis",
       "signExecutable": false,
       "artifactName": "Maplelog-Setup-${version}.${ext}"
