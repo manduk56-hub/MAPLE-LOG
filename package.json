@@ -1,0 +1,51 @@
+{
+  "name": "maplelog",
+  "version": "0.1.1",
+  "private": true,
+  "description": "캐릭터와 파티의 보스 모험을 기록하는 메이플스토리 일기장",
+  "author": "Maplelog",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "dev": "node server.cjs",
+    "start": "electron .",
+    "check": "node --check app.js && node --check server.cjs && node --check desktop/main.cjs",
+    "build": "electron-builder --win nsis --x64",
+    "build:dir": "electron-builder --win --dir --x64"
+  },
+  "devDependencies": {
+    "electron": "44.7.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.maplelog.diary",
+    "productName": "메이플로그",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "index.html",
+      "style.css",
+      "maple-theme.css",
+      "game-theme.css",
+      "app.js",
+      "desktop/**",
+      "assets/**",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": "nsis",
+      "signExecutable": false,
+      "artifactName": "Maplelog-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "메이플로그",
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}
