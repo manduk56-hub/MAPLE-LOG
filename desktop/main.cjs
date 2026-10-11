@@ -1,5 +1,6 @@
 'use strict';
-const { app, BrowserWindow, Menu, dialog, protocol, session } = require('electron');
+const { app, BrowserWindow, Menu, dialog, protocol, session, ipcMain } = require('electron');
+const { spawn } = require('node:child_process');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 
@@ -51,8 +52,23 @@ else {
       minWidth: 780, minHeight: 600, title: '메이플로그',
       icon: path.join(app.getAppPath(), 'assets', 'maplelog-icon.ico'),
       backgroundColor: '#f6f5ef', show: true, autoHideMenuBar: true,
-      webPreferences: { nodeIntegration: false, contextIsolation: true, sandbox: true, devTools: !app.isPackaged }
+      webPreferences: { preload: path.join(__dirname, 'preload.cjs'), nodeIntegration: false, contextIsolation: true, sandbox: true, devTools: !app.isPackaged }
     });
+    if (process.platform === 'win32') {
+      const nativeHandle = mainWindow.getNativeWindowHandle();
+      const handle = nativeHandle.length === 8 ? nativeHandle.readBigUInt64LE().toString() : String(nativeHandle.readUInt32LE());
+      const helperPath = path.join(__dirname, 'korean-input.ps1').replace('app.asar' + path.sep, 'app.asar.unpacked' + path.sep);
+      const powershell = path.join(process.env.SystemRoot || 'C:\\Windows', 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe');
+      const helper = spawn(powershell, ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', helperPath, '-WindowHandle', handle], { windowsHide: true, stdio: ['pipe', 'ignore', 'ignore'] });
+      helper.on('error', () => {}); helper.stdin.on('error', () => {});
+      let lastRequest = 0;
+      ipcMain.on('maplelog:korean-input', event => {
+        if (event.sender !== mainWindow.webContents || event.senderFrame?.url !== 'maplelog://app/' && event.senderFrame?.url !== 'maplelog://app/index.html') return;
+        if (!mainWindow.isFocused() || helper.exitCode !== null || helper.killed || Date.now() - lastRequest < 100) return;
+        lastRequest = Date.now(); helper.stdin.write('korean\n');
+      });
+      mainWindow.on('closed', () => { helper.stdin.end(); helper.kill(); });
+    }
     Menu.setApplicationMenu(null);
     mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
     mainWindow.webContents.on('will-navigate', (event, url) => {

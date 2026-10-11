@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "node server.cjs",
     "start": "electron .",
-    "check": "node --check app.js && node --check backup.js && node --check server.cjs && node --check desktop/main.cjs && node --check content.js && node scripts/build-content.cjs --check",
+    "check": "node --check app.js && node --check backup.js && node --check server.cjs && node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check content.js && node scripts/build-content.cjs --check",
     "build": "electron-builder --win nsis --x64",
     "build:dir": "electron-builder --win --dir --x64",
     "content:build": "node scripts/build-content.cjs",
@@ -24,6 +24,9 @@
   "build": {
     "appId": "com.maplelog.diary",
     "productName": "메이플로그",
+    "asarUnpack": [
+      "desktop/*.ps1"
+    ],
     "directories": {
       "output": "release"
     },
