@@ -36,9 +36,12 @@ public static class MapleKoreanInput {
     IntPtr ime = ImmGetDefaultIMEWnd(info.focus), result;
     if (ime == IntPtr.Zero) return;
     SendMessageTimeout(ime, 0x0283, new IntPtr(6), new IntPtr(1), 2, 100, out result);
-    SendMessageTimeout(ime, 0x0283, new IntPtr(1), IntPtr.Zero, 2, 100, out result);
+    if (SendMessageTimeout(ime, 0x0283, new IntPtr(1), IntPtr.Zero, 2, 100, out result) == IntPtr.Zero) return;
     long conversion = result.ToInt64();
-    SendMessageTimeout(ime, 0x0283, new IntPtr(2), new IntPtr(conversion | 1), 2, 100, out result);
+    // Enable Korean while clearing IME_CMODE_FULLSHAPE (0x0008), which
+    // makes consecutive digits and spaces appear as wide characters.
+    long koreanHalfWidth = (conversion | 0x0001) & ~0x0008L;
+    SendMessageTimeout(ime, 0x0283, new IntPtr(2), new IntPtr(koreanHalfWidth), 2, 100, out result);
   }
 }
 '@

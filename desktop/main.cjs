@@ -1,5 +1,5 @@
 'use strict';
-const { app, BrowserWindow, Menu, dialog, protocol, session, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, dialog, protocol, session, ipcMain, shell } = require('electron');
 const { spawn } = require('node:child_process');
 const fs = require('node:fs/promises');
 const path = require('node:path');
@@ -19,6 +19,21 @@ else {
     mainWindow.show(); mainWindow.focus();
   });
   app.whenReady().then(async () => {
+    if (process.platform === 'win32' && !app.isPackaged) {
+      // Windows resolves taskbar groups through Start Menu shortcuts. Replace
+      // a stale installed-app link with the current source launcher and icon.
+      const programs = path.join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs');
+      await fs.mkdir(programs, { recursive: true });
+      if (!shell.writeShortcutLink(path.join(programs, '메이플로그.lnk'), 'create', {
+        target: process.execPath,
+        cwd: app.getAppPath(),
+        args: `"${app.getAppPath()}"`,
+        description: '메이플로그 로컬 소스 실행',
+        icon: path.join(app.getAppPath(), 'assets', 'maplelog-icon.ico'),
+        iconIndex: 0,
+        appUserModelId: 'com.maplelog.diary'
+      })) console.warn('메이플로그 시작 메뉴 바로가기를 갱신하지 못했습니다.');
+    }
     const allowedFiles = { '/': 'index.html', '/index.html': 'index.html', '/app.js': 'app.js', '/style.css': 'style.css', '/game-theme.css': 'game-theme.css', '/maple-theme.css': 'maple-theme.css', '/assets/maple-autumn.jpg': 'assets/maple-autumn.jpg', '/assets/maple-scene.jpg': 'assets/maple-scene.jpg', '/assets/maple-character.png': 'assets/maple-character.png', '/assets/meso.png': 'assets/meso.png', '/assets/fonts/Maplestory-Light.ttf': 'assets/fonts/Maplestory-Light.ttf', '/assets/fonts/Maplestory-Bold.ttf': 'assets/fonts/Maplestory-Bold.ttf' };
     for (const weight of ['Regular', 'Medium', 'SemiBold', 'Bold', 'ExtraBold', 'Black']) allowedFiles[`/assets/fonts/NotoSansKR-${weight}.woff2`] = `assets/fonts/NotoSansKR-${weight}.woff2`;
     allowedFiles['/assets/boss-count.png'] = 'assets/boss-count.png';
@@ -54,10 +69,19 @@ else {
       height: Math.max(640, Math.min(1200, Number(state.height) || 860)),
       minWidth: 780, minHeight: 600, title: '메이플로그',
       icon: path.join(app.getAppPath(), 'assets', 'maplelog-icon.ico'),
-      backgroundColor: '#f6f5ef', show: true, autoHideMenuBar: true,
+      backgroundColor: '#f6f5ef', show: false, autoHideMenuBar: true,
       webPreferences: { preload: path.join(__dirname, 'preload.cjs'), nodeIntegration: false, contextIsolation: true, sandbox: true, devTools: !app.isPackaged }
     });
     if (process.platform === 'win32') {
+      // The source launcher is electron.exe, so Windows needs Maplelog's own
+      // taskbar identity and icon before the window becomes visible.
+      mainWindow.setAppDetails({
+        appId: 'com.maplelog.diary',
+        appIconPath: path.join(app.getAppPath(), 'assets', 'maplelog-icon.ico'),
+        appIconIndex: 0,
+        relaunchCommand: app.isPackaged ? `"${process.execPath}"` : `"${process.execPath}" "${app.getAppPath()}"`,
+        relaunchDisplayName: '메이플로그'
+      });
       const nativeHandle = mainWindow.getNativeWindowHandle();
       const handle = nativeHandle.length === 8 ? nativeHandle.readBigUInt64LE().toString() : String(nativeHandle.readUInt32LE());
       const helperPath = path.join(__dirname, 'korean-input.ps1').replace('app.asar' + path.sep, 'app.asar.unpacked' + path.sep);
