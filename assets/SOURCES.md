@@ -25,3 +25,6 @@
 - 공식 홈페이지 풍경 배경: https://lwi.nexon.com/maplestory/common/visual/sub_visual.jpg (메이플스토리 공식 미디어 페이지의 공통 배경, assets/maple-scene.jpg)
 
 - 메소 동전 UI 이미지: 사용자가 제공한 메이플스토리 인벤토리 캡처 (assets/meso.png)
+# 소비 일기 빈 화면
+
+- `expense-empty.png`: 사용자가 제공한 날개 달린 캐릭터 이미지. 제공된 PNG 원본을 그대로 사용.

@@ -109,7 +109,8 @@ main{display:flex;flex-direction:column}main>header{flex:0 0 53px;width:100%;mar
 .sidebar>.local-label{margin-top:auto}
 @media(max-width:850px){.sidebar>.local-label{margin-top:0;margin-left:auto}}
 /* Boss and difficulty selectors share the inventory's inset field styling. */
-#record-form .boss-field, #custom-boss-field { grid-column: 1 / -1; }
+#record-form .boss-field { grid-column: auto; min-width: 0; }
+#custom-boss-field { grid-column: 1 / -1; }
 #record-form .form-grid select {
   display: block;
   width: 100%;

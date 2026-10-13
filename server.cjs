@@ -5,9 +5,12 @@ const files = { '/': 'index.html', '/index.html': 'index.html', '/style.css': 's
 for (const weight of ['Regular', 'Medium', 'SemiBold', 'Bold', 'ExtraBold', 'Black']) files[`/assets/fonts/NotoSansKR-${weight}.woff2`] = `assets/fonts/NotoSansKR-${weight}.woff2`;
 files['/assets/boss-count.png'] = 'assets/boss-count.png';
 files['/assets/item-count.png'] = 'assets/item-count.png';
+files['/assets/expense-empty.png'] = 'assets/expense-empty.png';
 files['/assets/maplelog-icon.png'] = 'assets/maplelog-icon.png';
 files['/content.js'] = 'content.js';
 files['/backup.js'] = 'backup.js';
+files['/pagination.js'] = 'pagination.js';
+for (const file of ['expense-model.js', 'expense.js', 'diary-ui.css']) files[`/${file}`] = file;
 files['/content/catalog.json'] = 'content/catalog.json';
 const types = { '.json': 'application/json', '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.jpg': 'image/jpeg', '.png': 'image/png', '.ttf': 'font/ttf', '.woff2': 'font/woff2' };
 const server = http.createServer((req, res) => {

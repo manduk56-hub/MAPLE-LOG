@@ -23,9 +23,12 @@ else {
     for (const weight of ['Regular', 'Medium', 'SemiBold', 'Bold', 'ExtraBold', 'Black']) allowedFiles[`/assets/fonts/NotoSansKR-${weight}.woff2`] = `assets/fonts/NotoSansKR-${weight}.woff2`;
     allowedFiles['/assets/boss-count.png'] = 'assets/boss-count.png';
     allowedFiles['/assets/item-count.png'] = 'assets/item-count.png';
+    allowedFiles['/assets/expense-empty.png'] = 'assets/expense-empty.png';
     allowedFiles['/assets/maplelog-icon.png'] = 'assets/maplelog-icon.png';
     allowedFiles['/content.js'] = 'content.js';
     allowedFiles['/backup.js'] = 'backup.js';
+    allowedFiles['/pagination.js'] = 'pagination.js';
+    for (const file of ['expense-model.js', 'expense.js', 'diary-ui.css']) allowedFiles[`/${file}`] = file;
     const types = { '.json': 'application/json', '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.jpg': 'image/jpeg', '.png': 'image/png', '.ttf': 'font/ttf', '.woff2': 'font/woff2' };
     protocol.handle('maplelog', async request => {
       const url = new URL(request.url);

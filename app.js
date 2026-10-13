@@ -14,6 +14,7 @@ let records = [];
 let editingId = null;
 let storageReady = true;
 let toastTimer;
+const bossPager = MaplePagination.create($('#records').closest('.records-panel'), '수익 기록', renderRecords);
 const money = value => mapleMoney(value);
 // 한국 메이플스토리 공식 보스 가이드 기준. 저장 형식은 기존의 '난이도 보스명'을 유지한다.
 const BOSS_CATALOG = MapleContent.catalog.bosses;
@@ -73,6 +74,52 @@ function save(next) {
   try { localStorage.setItem(STORAGE, JSON.stringify(next)); records = next; return true; }
   catch (error) { toast('저장 공간이 부족하거나 브라우저 저장이 차단되어 있어요. 백업 후 다시 시도해주세요.'); return false; }
 }
+const BOSS_NOTES_ID = 'boss-notes';
+let bossNotes = [], bossNotesReady = true, bossNoteDate = null;
+function readBossNotes() {
+  const saved = window.MapleSystems.get(BOSS_NOTES_ID);
+  if (!saved) return [];
+  if (saved.version !== 1) throw new Error('version');
+  const notes = saved.data?.notes;
+  if (!Array.isArray(notes) || notes.length > 20000 || new Set(notes.map(n => n?.date)).size !== notes.length ||
+    !notes.every(n => n && MapleExpense.validDate(n.date) && typeof n.text === 'string' && n.text.length <= 2000)) throw new Error('data');
+  return notes;
+}
+try { bossNotes = readBossNotes(); }
+catch { bossNotesReady = false; $('#boss-note').disabled = true; $('#boss-save-note').disabled = true; }
+const savedBossNote = date => bossNotes.find(n => n.date === date)?.text || '';
+const bossNoteDirty = () => bossNoteDate && $('#boss-note').value !== savedBossNote(bossNoteDate);
+function renderBossNote() {
+  const viewedMonth = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, '0')}`;
+  const date = selectedDate || (viewedMonth === today.slice(0, 7) ? today : `${viewedMonth}-01`);
+  if (bossNoteDate !== date) {
+    bossNoteDate = date; $('#boss-note').value = savedBossNote(date);
+    $('#boss-note-status').textContent = !bossNotesReady ? '메모를 읽지 못했어요. 백업을 확인해주세요.' : savedBossNote(date) ? '저장된 메모' : '메모를 남겨보세요';
+  }
+  $('#boss-note-date').textContent = `${date.replaceAll('-', '. ')} · ${selectedDate ? '선택한 날' : date === today ? '오늘' : '이 달의 첫날'}`;
+}
+function saveBossNote() {
+  if (!bossNotesReady || !bossNoteDate) return false;
+  const text = $('#boss-note').value;
+  try {
+    const current = readBossNotes();
+    if (JSON.stringify(current) !== JSON.stringify(bossNotes)) throw new Error('changed');
+    const notes = bossNotes.filter(n => n.date !== bossNoteDate);
+    if (text.trim()) notes.push({ date: bossNoteDate, text });
+    if (notes.length > 20000 || text.length > 2000) throw new Error('data');
+    window.MapleSystems.set(BOSS_NOTES_ID, { notes }, 1);
+    bossNotes = notes; $('#boss-note').value = savedBossNote(bossNoteDate);
+    $('#boss-note-status').textContent = text.trim() ? '저장했어요' : '빈 메모로 저장했어요';
+    renderCalendar(); return true;
+  } catch { toast('메모를 저장하지 못했어요. 백업과 저장 공간을 확인한 뒤 새로고침해주세요.'); return false; }
+}
+function guardBossNote(action) {
+  if (!bossNoteDirty()) { action(); return; }
+  confirmAction('작성한 메모를 저장할까요?', '날짜나 화면을 이동하기 전에 메모를 저장합니다. 취소하면 현재 화면에서 계속 작성할 수 있어요.', () => { if (saveBossNote()) action(); });
+}
+$('#boss-note').addEventListener('input', () => { $('#boss-note-status').textContent = bossNoteDirty() ? '저장하지 않은 메모' : '저장된 메모'; });
+$('#boss-save-note').onclick = saveBossNote;
+window.addEventListener('beforeunload', event => { if (bossNoteDirty()) { event.preventDefault(); event.returnValue = ''; } });
 function monthRecords() { return records.filter(r => r.date.startsWith(`${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, '0')}`)); }
 function renderCalendar() {
   $('#calendar-title').textContent = `${month.getFullYear()}년 ${month.getMonth() + 1}월`;
@@ -83,8 +130,8 @@ function renderCalendar() {
   $('#calendar').innerHTML = Array.from({ length: days }, (_, i) => {
     const date = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
     const key = localDate(date);
-    const count = counts.get(key) || 0;
-    return `<button type="button" data-date="${key}" data-record-count="${count}" data-heat="${count >= 10 ? 5 : count >= 5 ? 4 : count >= 3 ? 3 : count}" class="${date.getMonth() !== month.getMonth() ? 'other-month ' : ''}${key === today ? 'is-today ' : ''}${key === selectedDate ? 'selected ' : ''}${count ? 'has-record' : ''}" title="${key} · 기록 ${count}개" aria-label="${key}, 기록 ${count}개${key === today ? ', 오늘' : ''}" aria-pressed="${key === selectedDate}">${date.getDate()}</button>`;
+    const count = counts.get(key) || 0, hasNote = bossNotes.some(n => n.date === key && n.text.trim());
+    return `<button type="button" data-date="${key}" data-record-count="${count}" data-heat="${count >= 10 ? 5 : count >= 5 ? 4 : count >= 3 ? 3 : count}" class="${date.getMonth() !== month.getMonth() ? 'other-month ' : ''}${key === today ? 'is-today ' : ''}${key === selectedDate ? 'selected ' : ''}${count ? 'has-record ' : ''}${hasNote ? 'has-note' : ''}" title="${key} · 기록 ${count}개${hasNote ? ' · 메모 있음' : ''}" aria-label="${key}, 기록 ${count}개${hasNote ? ', 메모 있음' : ''}${key === today ? ', 오늘' : ''}" aria-pressed="${key === selectedDate}">${date.getDate()}</button>`;
   }).join('');
 }
 function renderRecordCard(r) {
@@ -105,20 +152,24 @@ function renderRecords() {
   $('#stat-value').textContent = mapleMoney(sum);
   $('#stat-value').title = `${sum.toLocaleString('ko-KR')} 메소`;
   renderIncome();
-  let filtered = all.filter(r => (!selectedDate || r.date === selectedDate) && [r.boss, r.character, r.party, r.memo, ...r.items.map(i => i.name)].join(' ').toLocaleLowerCase().includes(query));
+  let filtered = all.filter(r => {
+    return (!selectedDate || r.date === selectedDate) &&
+      [r.boss, r.character, r.party, r.memo, ...r.items.map(i => i.name)].join(' ').toLocaleLowerCase().includes(query);
+  });
   const sort = $('#sort').value;
   filtered.sort((a, b) => sort === 'value' ? total(b) - total(a) : sort === 'old' ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date));
-  $('#list-title').innerHTML = `${selectedDate ? `${Number(selectedDate.slice(5, 7))}월 ${Number(selectedDate.slice(8))}일의 기록` : '이번 달의 기록'} <span>${filtered.length}</span>`;
+  const pageRecords = bossPager.slice(filtered, JSON.stringify([month.getFullYear(), month.getMonth(), selectedDate, query, sort]));
+  $('#list-title').innerHTML = `${selectedDate ? `${Number(selectedDate.slice(5, 7))}월 ${Number(selectedDate.slice(8))}일의 수익 기록` : '이번 달의 수익 기록'} <span>${filtered.length}</span>`;
   $('#clear-day').disabled = !selectedDate;
-  $('#list-subtitle').textContent = selectedDate ? '그날 함께한 모험을 다시 펼쳐보세요' : '당신의 행운이 쌓이는 곳';
   if (!filtered.length) {
-    $('#records').innerHTML = `<div class="empty-state"><div class="empty-icon">▤</div><h3>${query ? '검색한 기록이 없어요' : '아직 펼치지 않은 모험 이야기'}</h3><p>${query ? '다른 보스, 캐릭터, 아이템 이름으로 찾아보세요.' : '보스를 함께한 순간, 반가웠던 득템.<br>첫 번째 일기에 그날의 이야기를 담아보세요.'}</p>${query ? '' : '<button id="empty-new">＋ 첫 기록 남기기</button>'}</div>`;
+    const searching = query;
+    $('#records').innerHTML = `<div class="empty-state"><div class="empty-icon">▤</div><h3>${searching ? '검색한 기록이 없어요' : '아직 펼치지 않은 모험 이야기'}</h3><p>${searching ? '다른 검색어로 찾아보세요.' : '보스를 함께한 순간, 반가웠던 득템.<br>첫 번째 일기에 그날의 이야기를 담아보세요.'}</p>${searching ? '' : '<button id="empty-new">＋ 첫 기록 남기기</button>'}</div>`;
     if ($('#empty-new')) $('#empty-new').addEventListener('click', () => openEditor());
     return;
   }
-  $('#records').innerHTML = filtered.map(renderRecordCard).join('');
+  $('#records').innerHTML = pageRecords.map(renderRecordCard).join('');
 }
-function render() { renderCalendar(); renderRecords(); }
+function render() { renderCalendar(); renderRecords(); renderBossNote(); }
 function mapleMoney(value) {
   if ((typeof value !== 'bigint' && !Number.isSafeInteger(value)) || value < 0) return '금액을 확인해주세요';
   let remaining = BigInt(value);
@@ -256,32 +307,37 @@ $('#record-form').addEventListener('submit', event => {
   if (!validRecord(record)) { $('#form-error').textContent = '입력 내용을 확인해주세요. 이름은 공백일 수 없으며 합계는 안전한 정수 범위여야 합니다.'; return; }
   const next = editingId ? records.map(r => r.id === editingId ? record : r) : [...records, record];
   if (!save(next)) return;
-  month = new Date(`${record.date.slice(0, 7)}-01T12:00:00`); selectedDate = record.date; $('#search').value = ''; render(); $('#editor').close(); toast('그날의 모험을 저장했어요.');
+  $('#editor').close(); toast('그날의 모험을 저장했어요.');
+  guardBossNote(() => { month = new Date(`${record.date.slice(0, 7)}-01T12:00:00`); selectedDate = record.date; $('#search').value = ''; render(); });
 });
-$('#calendar').addEventListener('click', event => { const button = event.target.closest('[data-date]'); if (!button) return; selectedDate = button.dataset.date === selectedDate ? null : button.dataset.date; if (selectedDate) month = new Date(`${selectedDate.slice(0, 7)}-01T12:00:00`); render(); });
-function changeMonth(amount) { const next = new Date(month.getFullYear(), month.getMonth() + amount, 1); if (next.getFullYear() < 1900 || next.getFullYear() > 9999) return; month = next; selectedDate = null; render(); }
+$('#calendar').addEventListener('click', event => { const button = event.target.closest('[data-date]'); if (!button) return; guardBossNote(() => { selectedDate = button.dataset.date === selectedDate ? null : button.dataset.date; if (selectedDate) month = new Date(`${selectedDate.slice(0, 7)}-01T12:00:00`); render(); }); });
+function changeMonth(amount) { const next = new Date(month.getFullYear(), month.getMonth() + amount, 1); if (next.getFullYear() < 1900 || next.getFullYear() > 9999) return; guardBossNote(() => { month = next; selectedDate = null; render(); }); }
 function changeDay(amount) {
   const anchor = new Date(`${selectedDate || today}T12:00:00`);
   const next = new Date(anchor.getFullYear(), anchor.getMonth(), anchor.getDate() + amount, 12);
   if (next.getFullYear() < 1900 || next.getFullYear() > 9999) return;
-  selectedDate = localDate(next);
-  month = new Date(next.getFullYear(), next.getMonth(), 1);
-  render();
+  guardBossNote(() => { selectedDate = localDate(next); month = new Date(next.getFullYear(), next.getMonth(), 1); render(); });
 }
+let pickerMonth = null, onPickerMonth = null;
 function renderMonthPicker() {
   const year = Number($('#picker-year').value);
   $('#picker-months').innerHTML = Array.from({ length: 12 }, (_, i) => {
-    const active = year === month.getFullYear() && i === month.getMonth();
+    const active = year === pickerMonth.getFullYear() && i === pickerMonth.getMonth();
     return `<button type="button" data-month="${i}" aria-pressed="${active}" class="${active ? 'active' : ''}">${i + 1}월</button>`;
   }).join('');
   $('#prev-year').disabled = year <= 1900;
   $('#next-year').disabled = year >= 9999;
 }
-$('#calendar-title').onclick = () => {
-  $('#picker-year').value = month.getFullYear();
+function openMonthPicker(currentMonth, onSelect) {
+  pickerMonth = currentMonth;
+  onPickerMonth = onSelect;
+  $('#picker-year').value = currentMonth.getFullYear();
   renderMonthPicker();
   $('#month-picker').showModal();
-};
+}
+$('#calendar-title').onclick = () => openMonthPicker(month, nextMonth => {
+  guardBossNote(() => { month = nextMonth; selectedDate = null; render(); });
+});
 $('#close-month-picker').onclick = () => $('#month-picker').close();
 $('#picker-year').addEventListener('input', renderMonthPicker);
 function changePickerYear(amount) {
@@ -295,15 +351,14 @@ $('#next-year').onclick = () => changePickerYear(1);
 $('#picker-months').addEventListener('click', event => {
   const button = event.target.closest('[data-month]');
   if (!button || !$('#picker-year').reportValidity()) return;
-  month = new Date(Number($('#picker-year').value), Number(button.dataset.month), 1);
-  selectedDate = null;
-  render();
+  const nextMonth = new Date(Number($('#picker-year').value), Number(button.dataset.month), 1);
   $('#month-picker').close();
+  onPickerMonth(nextMonth);
 });
 $('#prev-month').onclick = () => changeMonth(-1); $('#next-month').onclick = () => changeMonth(1);
 $('#prev-day').onclick = () => changeDay(-1); $('#next-day').onclick = () => changeDay(1);
-$('#today').onclick = () => { month = new Date(`${today.slice(0, 7)}-01T12:00:00`); selectedDate = today; render(); };
-$('#clear-day').onclick = () => { selectedDate = null; render(); };
+$('#today').onclick = () => guardBossNote(() => { month = new Date(`${today.slice(0, 7)}-01T12:00:00`); selectedDate = today; render(); });
+$('#clear-day').onclick = () => guardBossNote(() => { selectedDate = null; render(); });
 $('#search').addEventListener('input', renderRecords); $('#sort').addEventListener('change', renderRecords);
 $('#records').addEventListener('click', event => {
   const edit = event.target.closest('[data-edit]'); const remove = event.target.closest('[data-delete]');
@@ -326,6 +381,8 @@ $('#import-file').addEventListener('change', async event => {
     const data = JSON.parse(await file.text());
     const systems = MapleBackup.parse(data);
     const diary = systems['boss-diary'];
+    const expense = systems[MapleExpense.ID];
+    if (expense && [1, 2, 3, MapleExpense.VERSION].includes(expense.version) && !MapleExpense.validData(expense.data, expense.version)) throw new Error('expense-format');
     if (diary) {
       if (![1, 2].includes(diary.version) || !Array.isArray(diary.data) || diary.data.length > 20000 || !diary.data.every(validRecord) || new Set(diary.data.map(r => r.id)).size !== diary.data.length) throw new Error('format');
       diary.data = normalizeRecords(diary.data); diary.version = 2;

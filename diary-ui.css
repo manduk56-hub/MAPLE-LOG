@@ -1,0 +1,174 @@
+/* Inset steel menu and diagonal gloss from the supplied reference. */
+:root{--expense-meso:#ff9b95;--expense-day:#eaa4a4;--expense-week:#c0b0e6}
+#expense-view [data-heat="1"]{--heat:#eee8f5;--heat-text:#655477}
+#expense-view [data-heat="2"]{--heat:#dacde9;--heat-text:#59466c}
+#expense-view [data-heat="3"]{--heat:#bba7d3;--heat-text:#413151}
+#expense-view [data-heat="4"]{--heat:#8a70aa;--heat-text:#fff}
+#expense-view [data-heat="5"]{--heat:#614780;--heat-text:#fff}
+#expense-view .expense-card .card-totals strong{color:var(--expense-week)}
+/* Keep the scrolling form inside the rounded editor frame. */
+#expense-editor,#editor{color-scheme:dark;padding:6px;overflow:hidden;max-height:90dvh}
+#expense-form,#record-form{max-height:calc(90dvh - 14px);overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;border-radius:5px;overscroll-behavior:contain}
+#expense-form::-webkit-scrollbar,#record-form::-webkit-scrollbar{width:10px;height:10px}
+#expense-form::-webkit-scrollbar-track,#record-form::-webkit-scrollbar-track{background:#263039;border-radius:8px}
+#expense-form::-webkit-scrollbar-thumb,#record-form::-webkit-scrollbar-thumb{background:#788a97;border:2px solid #263039;border-radius:8px;min-height:40px}
+#expense-form::-webkit-scrollbar-thumb:hover,#record-form::-webkit-scrollbar-thumb:hover{background:#9ab5c5}
+#expense-form::-webkit-scrollbar-button,#record-form::-webkit-scrollbar-button{display:none}
+#expense-form::-webkit-scrollbar-corner,#record-form::-webkit-scrollbar-corner{background:#263039}
+@supports not selector(::-webkit-scrollbar){#expense-form,#record-form{scrollbar-width:thin;scrollbar-color:#788a97 #263039}}
+#expense-view .income-summary article strong,#expense-form #expense-form-total,#expense-form .expense-price-hint,#expense-form .expense-item-price,#expense-form .expense-start-price,#expense-form .expense-end-price{color:var(--expense-meso)}
+.calendar-panel .month-nav{min-height:54px;align-items:center;padding:8px 3px}.calendar-nav-arrows{height:34px;align-items:center}.calendar-nav-arrows .icon-button{height:34px;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;font-family:Arial,sans-serif}.month-nav .month-picker-trigger{display:flex;align-items:center;justify-content:center;gap:4px;height:34px;margin:0;padding:0;line-height:24px}.month-nav .month-picker-trigger::after{line-height:24px}.expense-month-control{display:flex;align-items:center;height:34px}.expense-month-control input{height:34px;padding:0;line-height:24px}.record-pagination .pagination-arrow{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;font-family:Arial,sans-serif;font-size:24px;line-height:1}.pagination-arrow span{display:block;line-height:1}
+.records-top,.calendar-panel>.panel-top{height:56px;min-height:56px;box-sizing:border-box;padding:10px 12px}.records-top>div:first-child{min-width:0}.records-top h2{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.record-list-description{margin:0 2px 10px;color:#4a6070;font-size:12px;line-height:1.6}.record-pagination{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:9px;margin:0 0 12px;border:1px solid #b0c0cd;border-radius:4px;background:#dce5ec;color:#365367;font-size:12px;flex-shrink:0}.record-pagination label{display:flex;align-items:center;gap:6px;color:#365367;font-size:12px}.record-pagination select{background:#fff;color:#304859;border:1px solid #a3b8c8;border-radius:4px;padding:5px;font-size:12px}.pagination-status{margin-left:auto;font-variant-numeric:tabular-nums}.pagination-top-actions{display:flex;gap:5px}.record-pagination button{min-width:30px;height:30px;border:1px solid #94adbe;border-radius:4px;background:#fff;color:#35566b;font-size:12px;padding:4px 8px}.record-pagination button[aria-current="page"]{background:#277e94;border-color:#277e94;color:#fff;font-weight:700}.record-pagination button:disabled{background:#e6edf2;color:#7a8d9b;border-color:#c2cfd9;cursor:default}.record-pagination-bottom{justify-content:center;margin:14px 0 0}.records-top .record-actions{flex-shrink:0}.records-top .primary{white-space:nowrap}@media(max-width:650px){.records-top h2{font-size:14px}.records-top .primary{font-size:11px;padding:7px 9px}.pagination-status{margin-left:0}.pagination-top-actions{margin-left:auto}.record-pagination-bottom{gap:4px}.record-pagination-bottom button{padding:4px 6px;min-width:28px}}
+.adventure-menu{margin-top:44px;padding:12px 9px 10px;border:1px solid #17232c;border-radius:6px;background:linear-gradient(90deg,#25313b,#34414b 48%,#25313b);box-shadow:inset 0 0 0 1px #667c8944,0 1px #596a7444;position:relative}
+.adventure-menu:before,.adventure-menu:after{content:'';position:absolute;top:12px;bottom:12px;width:1px;background:#74899644}.adventure-menu:before{left:3px}.adventure-menu:after{right:3px}
+.adventure-menu .nav-label{margin:0 3px 12px;text-align:center;color:#a9c3cf;font-size:12px;font-weight:500;letter-spacing:.2px}
+.diary-nav{display:flex;flex-direction:column;gap:6px}
+.diary-nav-button{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;gap:11px;width:100%;min-height:58px;padding:13px 12px;border:1px solid #6b98ac;border-radius:5px;background:linear-gradient(#375260,#294653 52%,#365b6c);box-shadow:inset 0 0 0 1px #192f3c,inset 0 1px 2px #a8c7d344,0 1px 2px #121c2666;color:#c2e1e9;font-size:14px;font-weight:600;text-align:left;transition:border-color .15s,background .15s}
+.diary-nav-button:before{content:'';position:absolute;z-index:-1;inset:0;background:linear-gradient(135deg,#92c0cd26 0 28%,transparent 28% 72%,#8fbecd0b 72%)}
+.diary-nav-button svg{flex:0 0 22px;width:22px;height:22px;fill:none;stroke:#8fb8c7;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round}
+.diary-nav-button:hover{filter:none;background:linear-gradient(#466879,#335868,#426d7f);border-color:#9bcad9;color:#fff}
+.diary-nav-button.is-active{border-color:#a3d6e3;background:linear-gradient(#476d7e,#335b6c 54%,#4b7d90);box-shadow:inset 0 0 0 1px #263f4e,inset 0 1px #b9e1eb66,0 0 10px #4c97b229;color:#effaff}
+.diary-nav-button.is-active svg{stroke:#c2e9f3}.menu-indicator{margin-left:auto;flex-shrink:0;width:5px;height:5px;border-radius:50%;background:transparent}.is-active .menu-indicator{background:#b9f1ff;box-shadow:0 0 6px #9ee4ff77}
+.expense-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:25px 0 5px;color:#e8f0f5}.expense-heading h1{font-size:27px;font-weight:700;color:#fff;margin:4px 0}.expense-heading p{margin:0;color:#b6cbd6;font-size:13px}.expense-heading .expense-kicker{color:#91bdce;font-size:11px;letter-spacing:1px}.expense-heading .primary{flex-shrink:0}
+.expense-summary{grid-template-columns:minmax(0,1.5fr) minmax(0,.7fr) minmax(0,1fr)}.expense-summary article{min-width:0}.expense-summary strong{overflow-wrap:anywhere;font-size:23px}.expense-summary #expense-top-category{font-size:18px}.expense-summary .stat-icon{flex-shrink:0}
+
+.expense-panel{background:#26313a;border:1px solid #596e7c;border-radius:7px;padding:15px;box-shadow:inset 0 1px #91a9b322}
+.expense-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-15px -15px 15px;padding:12px 15px;background:linear-gradient(#445965,#344550);border-bottom:1px solid #5b7180;border-radius:6px 6px 0 0;color:#cfdee7;font-size:12px}
+.expense-month-nav{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.expense-month-nav input{background:#253640;border:1px solid #7596a6;color:#fff;border-radius:4px;padding:6px 9px;color-scheme:dark;font-size:15px;min-width:150px}.expense-month-nav .icon-button{color:#cce0ea}.expense-month-nav .text-button{color:#c5e3ed}
+.expense-filters{display:flex;gap:8px;margin-bottom:15px}.expense-filters .search-box{background:#202b33;border-color:#59717f;color:#b8d4e0}.expense-filters input{color:#f1f6f8;font-size:13px}.expense-filters input::placeholder{color:#a7bdca}.expense-filters select{min-width:0;max-width:180px;color:#d8e7ef;background:#202b33;border:1px solid #59717f;padding:9px;border-radius:4px;font-size:12px;color-scheme:dark}
+#expense-records{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.expense-card{border:1px solid #516775;border-radius:6px;background:#303c46;padding:14px;min-width:0;box-shadow:inset 0 1px #70899522}.expense-card-top{display:flex;align-items:center;gap:10px;border-bottom:1px solid #4b5e6c;padding-bottom:11px;font-size:11px;color:#bcd0dc;flex-wrap:wrap}.expense-card-top .card-actions{margin-left:auto}.expense-category{background:#244b5b;color:#b2e3ef;border:1px solid #527b8c;border-radius:4px;padding:3px 7px;font-size:11px}.expense-card-body{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-top:13px;flex-wrap:wrap}.expense-card-body>div{min-width:0;flex:1}.expense-character{color:#a4bac8;font-size:12px}.expense-card h3{margin:4px 0 0;color:#fff;font-size:16px;overflow-wrap:anywhere}.expense-amount{color:#f6d397;font-size:16px;line-height:1.6;overflow-wrap:anywhere}
+.expense-card .record-memo{margin-top:12px}
+.expense-warning{border:1px solid #b89853;color:#ffe0a7;background:#4b4030;padding:12px;border-radius:5px}.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+#expense-form{padding:28px}#expense-form .modal-heading{margin:-28px -28px 22px;padding:14px 20px}#expense-form .modal-heading h2{margin:0;font-size:20px}#expense-form .form-grid label{min-width:0}#expense-form input,#expense-form select,#expense-form textarea{width:100%;color-scheme:dark}#expense-form input,#expense-form select{height:44px}#expense-form select{display:block;margin-top:7px;background:#242c33;color:#fff;border:1px solid #607482;border-radius:4px;padding:8px;font-size:14px}#expense-form input::placeholder,#expense-form textarea::placeholder{color:#aebbc5}#expense-price-hint{display:block;color:#f6d397;font-size:12px;margin-top:6px;overflow-wrap:anywhere}#expense-form-error{color:#ffc0ab;font-size:13px}.primary:disabled{cursor:not-allowed;opacity:.5}
+@media(max-width:1100px){.diary-nav-button{font-size:13px;padding:13px 10px;gap:8px}#expense-records{grid-template-columns:minmax(0,1fr)}.expense-summary strong{font-size:19px}}
+
+/* Consumption diary follows the boss diary's settlement → calendar → entries flow. */
+.expense-settlement{margin-top:0}.expense-settlement-note{color:#b8cbd7;font-size:12px}
+.income-heading{display:grid;grid-template-columns:auto minmax(0,1fr) auto;min-height:34px;align-items:center;gap:12px}.income-heading h2{white-space:nowrap}.income-heading select{height:34px;box-sizing:border-box}
+.income-heading .income-fee-note{margin:0;min-width:0;color:#b8cbd7;font-size:11px;line-height:1.6}.income-heading label,.expense-settlement-note{white-space:nowrap}
+@media(min-width:851px) and (max-width:1100px){.income-heading{min-height:53px}}
+@media(max-width:850px){.income-heading{grid-template-columns:auto auto;grid-template-rows:34px auto;gap:8px 12px}.income-heading .income-fee-note{grid-column:1/-1;grid-row:2;min-height:52.8px}.income-heading>label,.income-heading>.expense-settlement-note{grid-column:2;grid-row:1;justify-self:end}}
+@media(max-width:650px){.income-heading label{gap:5px}.income-heading select{max-width:135px}}
+
+
+.summary.expense-ranking{grid-template-columns:repeat(3,minmax(0,1fr))}
+.expense-ranking article{gap:10px}
+.expense-ranking article>div{flex:1;container-type:inline-size}
+.expense-ranking .expense-rank{width:43px;height:43px;font-size:24px;font-weight:800;color:#fff;flex:0 0 43px}
+.expense-ranking p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.expense-ranking strong{display:block;white-space:nowrap;font-size:clamp(11px,9cqw,22px);letter-spacing:-.3px;font-variant-numeric:tabular-nums;overflow-x:auto;scrollbar-width:thin}
+@media(max-width:650px){.summary.expense-ranking{grid-template-columns:repeat(2,minmax(0,1fr))}.expense-ranking .expense-rank{display:none}}
+.expense-ranking article strong{color:#fff}
+#expense-view #expense-day-total{color:var(--expense-day)}
+#expense-view #expense-week-total{color:var(--expense-week)}
+#expense-view #expense-month-total{color:#39f58d}
+.expense-workspace,.expense-workspace:has(.empty-state){align-items:stretch}.expense-calendar-column{min-width:0;display:flex;flex-direction:column;gap:16px}.expense-calendar-column>.calendar-panel{align-self:stretch;width:100%}
+/* Keep record-panel height consistent in both diaries. */
+#expense-records{flex:1;align-content:start}
+#records:has(>.empty-state),#expense-records:has(>.empty-state){align-content:stretch}
+.expense-month-control{min-width:0;flex:1}.expense-month-control input{display:block;width:100%;padding:5px 0;min-width:0;border:0;background:transparent;color:#344654;font-size:14px;font-weight:600;letter-spacing:-.3px;color-scheme:light}
+#expense-calendar .has-note:before,#calendar .has-note:before{content:'';position:absolute;bottom:4px;left:calc(50% + 4px);width:4px;height:4px;border-radius:1px;background:#ba8230}.expense-note-dot{width:5px;height:5px;border-radius:1px;background:#ba8230}
+.expense-notepad{padding:10px;background:#e8edf1;border:1px solid #8d9ca8;border-radius:5px;box-shadow:none}.expense-notepad .panel-top{margin-bottom:10px}#expense-note-date,#boss-note-date{margin:0 0 8px;font-size:12px;color:#425c6f}
+.expense-notepad textarea{margin:0;background:#fff;color:#263e4f;border:1px solid #9eb4c2;min-height:115px;resize:vertical;line-height:1.8;font-size:13px}.expense-notepad textarea::placeholder{color:#677e8e}
+.expense-note-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}.expense-note-actions .primary{padding:7px 10px;font-size:12px}#expense-note-status,#boss-note-status{font-size:11px;color:#4f6879}
+.records-panel.expense-panel{padding:10px;background:#e8edf1;border-color:#8d9ca8}.records-panel .expense-filters{flex-wrap:wrap;background:#d3dde5;padding:8px;border:1px solid #afbeca;border-radius:4px}.records-panel .expense-filters .search-box{flex-basis:100%;background:#fff;border-color:#b3c0cc}.records-panel .expense-filters input{color:#303d48}.records-panel .expense-filters input::placeholder{color:#657585}.records-panel .expense-filters select{flex:1;max-width:none;background:#fff;color:#303d48;border-color:#b3c0cc;color-scheme:light}
+#expense-records{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}.expense-card.record-card{padding:12px 14px;margin:0;border-radius:7px;background:#2e343c}.expense-card h3{margin:0;font-size:16px}.expense-card .record-memo{margin-top:8px}
+@media(max-width:650px){.expense-card.record-card{padding:11px}}
+
+#expense-form .expense-category-field{grid-column:1/-1;background:#354752;border:1px solid #607d8e;border-radius:6px;padding:12px;color:#5bd4ff;font-weight:600}#expense-form .expense-category-field select{height:48px;font-size:16px;font-weight:600;border-color:#91bac9;background:#263c48}
+.expense-item-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 26px;gap:8px;align-items:end;margin:12px 0}.expense-item-row label{font-size:12px;color:#b1b9c3}.expense-item-row input{display:block;min-width:0;margin-top:5px;padding:10px;background:#242c33;border:1px solid #91bac9;color:#fff;border-radius:4px;font-size:14px}.expense-price-hint{grid-column:2;font-size:12px;color:#f5d69b;text-align:right;overflow-wrap:anywhere}.expense-price-hint:empty{display:none}#expense-form .form-total strong{color:#f5d69b}
+.expense-direct-fields,.expense-balance-fields{grid-column:1/-1}.expense-balance-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.expense-balance-tip{grid-column:1/-1;margin:0;color:#b6cbd6;font-size:12px}.expense-item-row .expense-price-hint{grid-column:1/-1;text-align:right}.expense-item-row{padding:12px;border:1px solid #4d6574;border-radius:6px;background:#28343e}.expense-cost-notice{font-size:12px;line-height:1.8;color:#c4d5df;margin:12px 0}.expense-item-row select{font-size:14px}.expense-item-row .remove-item{height:44px;padding:0}
+#expense-form .expense-item-price,#expense-form .expense-start-price,#expense-form .expense-end-price,#expense-form .expense-price-hint,#expense-form .form-total strong{font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;line-height:1.6;letter-spacing:0;text-shadow:none;font-variant-numeric:tabular-nums}
+#expense-form .expense-item-price,#expense-form .expense-start-price,#expense-form .expense-end-price{box-sizing:border-box;height:44px;margin-top:4px;padding:10px 12px;background:#202932;color:#fff;border:1px solid #849bab;border-radius:4px;box-shadow:inset 0 1px 2px #141a2044;text-align:right}
+#expense-form .expense-item-price:focus,#expense-form .expense-start-price:focus,#expense-form .expense-end-price:focus{border-color:#66d8f3;outline:2px solid #66d8f35c;outline-offset:1px}
+#expense-form .expense-price-hint{color:#7fffff}
+#expense-form .expense-balance-hint{display:block;margin-top:6px;color:#7fffff;text-align:right;font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;line-height:1.6;letter-spacing:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+#expense-form .expense-balance-hint:empty{display:none}
+.expense-balance-fields{align-items:start}
+#expense-form .expense-item-row label,#expense-form .item-heading span{color:#d4dee8}
+#expense-form .expense-item-row label{line-height:1.5}
+#expense-form .form-total>span{color:#e0e8ef;font-family:'Noto Sans KR',sans-serif;font-size:13px}
+#expense-form .form-total{justify-content:flex-end;text-align:right}
+#expense-form #expense-form-total{color:var(--expense-week)}
+@media(max-width:650px){.expense-settlement .income-heading{gap:8px;align-items:center}.expense-settlement-note{font-size:10px}.expense-workspace{grid-template-columns:minmax(0,1fr)}.expense-calendar-column{gap:12px}.expense-item-row{gap:5px;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) 22px}.expense-item-row input{font-size:12px;padding:8px}.expense-item-row label{font-size:11px}.expense-note-actions .primary{font-size:12px}.expense-month-control input{font-size:15px}.expense-card .record-title{flex-wrap:wrap}}
+@media(max-width:850px){.sidebar{height:auto;min-height:115px;flex-wrap:wrap;gap:12px;padding:14px 18px}.adventure-menu{order:3;flex-basis:100%;margin:0;padding:0;border:0;background:none;box-shadow:none}.adventure-menu:before,.adventure-menu:after,.adventure-menu .nav-label{display:none}.diary-nav{flex-direction:row;gap:7px}.diary-nav-button{min-height:44px;font-size:14px;justify-content:center}.diary-nav-button svg{width:19px;height:19px;flex-basis:19px}.menu-indicator{margin-left:4px}.sidebar>.local-label{margin:0 0 0 auto}main{height:calc(100dvh - 164px)}.expense-summary{grid-template-columns:minmax(0,1.3fr) minmax(0,.6fr) minmax(0,1fr)}}
+@media(max-width:650px){.expense-heading{padding-top:18px;gap:10px}.expense-heading h1{font-size:24px}.expense-heading p{font-size:11px}.expense-heading .primary{font-size:12px;padding:9px}.expense-summary{grid-template-columns:1fr 1fr}.expense-summary article:first-child{grid-column:1/-1}.expense-summary strong{font-size:20px}.expense-summary #expense-top-category{font-size:16px}.expense-toolbar{flex-wrap:wrap}.expense-filters{flex-wrap:wrap}.expense-filters .search-box{flex-basis:100%}.expense-filters select{max-width:none;flex:1}.expense-month-nav .text-button{font-size:11px}.expense-panel{padding:12px}.expense-toolbar{margin:-12px -12px 12px;padding:10px}.expense-card{padding:12px}#expense-form{padding:22px}#expense-form .modal-heading{margin:-22px -22px 20px}.expense-card-body{align-items:flex-start}.expense-amount{font-size:15px}}
+
+#record-form{padding:28px}
+#record-form .modal-heading{margin-left:-28px;margin-right:-28px;margin-top:-28px}
+#record-form .form-grid,#expense-form .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+#record-form .form-grid label,#expense-form .form-grid label{min-width:0}
+#record-form .boss-selection{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;padding:12px;background:#354752;border:1px solid #607d8e;border-radius:6px}
+#record-form .boss-selection .boss-field{padding:0;border:0;background:transparent}
+
+/* Shared typography for both diary editors, grouped by the text's role. */
+:is(#record-form,#expense-form){font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.5}
+:is(#record-form,#expense-form) .modal-heading{padding:14px 20px;margin-bottom:22px}
+:is(#record-form,#expense-form) .modal-heading :is(#editor-title,#expense-editor-title){margin:0;font-size:20px;font-weight:600;line-height:1.5;letter-spacing:0}
+:is(#record-form,#expense-form) .eyebrow{font-size:10px;font-weight:500;line-height:1.5;letter-spacing:1px}
+:is(#record-form,#expense-form) :is(.form-grid label,.full-label,.item-row label,.expense-item-row label){font-size:13px;font-weight:500;line-height:1.5}
+:is(#record-form,#expense-form) :is(input,select,textarea){font-family:inherit;font-size:14px;font-weight:500;line-height:1.5;letter-spacing:0}
+:is(#record-form,#expense-form) .form-grid :is(input,select){height:44px;min-height:44px}
+:is(#record-form,#expense-form) .form-grid :is(.boss-field,.expense-category-field) select{font-size:14px;font-weight:500;line-height:1.5;padding:10px 12px}
+:is(#record-form,#expense-form) :is(input,textarea)::placeholder{font-size:14px;font-weight:400}
+:is(#record-form,#expense-form) .optional{font-size:12px;font-weight:400}
+:is(#record-form,#expense-form) .item-heading h3{font-size:15px;font-weight:600;line-height:1.5}
+:is(#record-form,#expense-form) :is(.item-heading span,.expense-cost-notice,.expense-balance-tip,.expense-balance-hint){font-size:12px;font-weight:400;line-height:1.7}
+:is(#record-form,#expense-form) .form-total{font-size:13px;font-weight:400;line-height:1.6}
+:is(#record-form,#expense-form) :is(.form-total strong,.item-price-hint,.expense-price-hint){font-family:inherit;font-size:16px;font-weight:700;line-height:1.6;font-variant-numeric:tabular-nums}
+:is(#record-form,#expense-form) :is(.item-price,.expense-item-price,.expense-start-price,.expense-end-price){font-family:inherit;font-size:16px;font-weight:700;line-height:1.6;font-variant-numeric:tabular-nums}
+:is(#record-form,#expense-form) :is(.add-item,.modal-footer button){font-size:14px;font-weight:600;line-height:1.5}
+.pagination-options{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.record-pagination .pagination-options select{height:30px;margin:0;min-width:0;color-scheme:light}
+
+/* Keep each editor's basic fields together, with matching item cards. */
+:is(#record-form,#expense-form) .form-grid{padding:12px;border:1px solid #607d8e;border-radius:6px;background:#354752;gap:17px}
+#record-form .boss-selection{padding:0;border:0;background:transparent;gap:inherit}
+#expense-form .form-grid .expense-category-field{padding:0;border:0;background:transparent}
+:is(#record-form,#expense-form) .full-label{display:block;padding:12px;border:1px solid #607d8e;border-radius:6px;background:#354752}
+#record-form .item-row,#expense-form .expense-item-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) 26px;gap:8px;align-items:end;margin:12px 0;padding:12px;border:1px solid #4d6574;border-radius:6px;background:#28343e}
+:is(#record-form,#expense-form) :is(.item-row,.expense-item-row) label{min-width:0}
+:is(#record-form,#expense-form) :is(.item-row,.expense-item-row) :is(input,select){width:100%;height:44px;min-height:44px;margin-top:5px;padding:10px 12px;box-sizing:border-box}
+:is(#record-form,#expense-form) :is(.item-row,.expense-item-row) .remove-item{height:44px;min-width:0;padding:0;align-self:end}
+#record-form .item-row .item-price-hint{grid-column:1/-1;text-align:right}
+#record-form .item-row .item-price-hint:empty{display:none}
+
+/* A single surface contains each diary's items, add action and totals. */
+:is(#record-form,#expense-form){--diary-panel-bg:#28343e;--diary-panel-border:#4d6574}
+:is(#record-form,#expense-form) :is(.form-grid,.full-label,.diary-items-block){background:var(--diary-panel-bg);border:1px solid var(--diary-panel-border);border-radius:6px}
+:is(#record-form,#expense-form) .diary-items-block{padding:12px;margin:20px 0}
+:is(#record-form,#expense-form) .diary-items-block .item-heading{margin-top:0;padding-top:0}
+:is(#record-form,#expense-form) .diary-items-block :is(.item-row,.expense-item-row,.add-item,.form-total){background:var(--diary-panel-bg);border-color:var(--diary-panel-border);box-shadow:none}
+:is(#record-form,#expense-form) .diary-items-block .form-total{margin-bottom:0}
+
+/* Reserve the horizontal scrollbar's space in every summary card. */
+:is(#boss-view,#expense-view) .summary article{min-height:104px}
+:is(#boss-view,#expense-view) .summary article>div{grid-template-rows:20px 40px}
+:is(#boss-view,#expense-view) .summary strong{display:block;height:40px;line-height:32px;white-space:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}
+#boss-view .summary #stat-value{white-space:nowrap;overflow-wrap:normal}
+
+/* Center the search icon independently of the font's glyph baseline. */
+.records-panel .search-box{align-items:center}
+.records-panel .search-box>.search-icon{display:flex;align-items:center;justify-content:center;width:18px;height:18px;flex:0 0 18px;line-height:1}
+.records-panel .search-icon svg{display:block;width:18px;height:18px}
+.records-panel .search-box input{margin:0;line-height:20px}
+
+/* Complementary colors make income/expense changes immediately visible. */
+#expense-form .expense-price-hint[data-flow="income"]{color:#7fffff}
+#expense-form .expense-price-hint[data-flow="expense"]{color:#ff7f7f}
+#expense-form .expense-price-hint:is([data-flow="neutral"],[data-flow="unknown"]){color:#c2cdd7}
+
+#expense-records .card-totals .expense-record-net[data-flow="income"]{color:#7fffff}
+#expense-records .card-totals .expense-record-net[data-flow="expense"]{color:#ff7f7f}
+#expense-records .card-totals .expense-record-net[data-flow="neutral"]{color:#c2cdd7}
+#expense-records .expense-record-amount[data-flow="income"]{color:#7fffff}
+#expense-records .expense-record-amount[data-flow="expense"]{color:#ff7f7f}
+#expense-records .expense-record-amount[data-flow="neutral"]{color:#c2cdd7}
+
+/* The opened boss/difficulty lists use the consumption category's text size. */
+:is(#record-form,#expense-form) .form-grid :is(.boss-field,.expense-category-field) select :is(option,optgroup){font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:500;line-height:1.5;letter-spacing:0}
+
+/* Match boss/difficulty bars to the consumption category control. */
+:is(#record-form .form-grid .boss-selection .boss-field,#expense-form .form-grid .expense-category-field){font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;line-height:1.5}
+:is(#record-form .form-grid .boss-selection .boss-field,#expense-form .form-grid .expense-category-field) select[name]{font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:500;line-height:1.5;height:44px;min-height:44px;padding:10px 12px;background:#263c48;border:1px solid #91bac9;border-radius:4px;color:#fff;box-shadow:none}
+#record-form .form-grid .boss-selection .boss-field select[name]:disabled{color:#aebbc5;border-color:#607482}
