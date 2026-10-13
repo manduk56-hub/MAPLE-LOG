@@ -94,6 +94,19 @@
 @media(max-width:850px){.sidebar{height:auto;min-height:115px;flex-wrap:wrap;gap:12px;padding:14px 18px}.adventure-menu{order:3;flex-basis:100%;margin:0;padding:0;border:0;background:none;box-shadow:none}.adventure-menu:before,.adventure-menu:after,.adventure-menu .nav-label{display:none}.diary-nav{flex-direction:row;gap:7px}.diary-nav-button{min-height:44px;font-size:14px;justify-content:center}.diary-nav-button svg{width:19px;height:19px;flex-basis:19px}.menu-indicator{margin-left:4px}.sidebar>.local-label{margin:0 0 0 auto}main{height:calc(100dvh - 164px)}.expense-summary{grid-template-columns:minmax(0,1.3fr) minmax(0,.6fr) minmax(0,1fr)}}
 @media(max-width:650px){.expense-heading{padding-top:18px;gap:10px}.expense-heading h1{font-size:24px}.expense-heading p{font-size:11px}.expense-heading .primary{font-size:12px;padding:9px}.expense-summary{grid-template-columns:1fr 1fr}.expense-summary article:first-child{grid-column:1/-1}.expense-summary strong{font-size:20px}.expense-summary #expense-top-category{font-size:16px}.expense-toolbar{flex-wrap:wrap}.expense-filters{flex-wrap:wrap}.expense-filters .search-box{flex-basis:100%}.expense-filters select{max-width:none;flex:1}.expense-month-nav .text-button{font-size:11px}.expense-panel{padding:12px}.expense-toolbar{margin:-12px -12px 12px;padding:10px}.expense-card{padding:12px}#expense-form{padding:22px}#expense-form .modal-heading{margin:-22px -22px 20px}.expense-card-body{align-items:flex-start}.expense-amount{font-size:15px}}
 
+/* Extend the menu frame, leaving the middle empty. */
+@media(min-width:851px){.adventure-menu{flex:1;min-height:240px;display:flex;flex-direction:column}.meso-summary-button{margin-top:auto}.sidebar>.local-label{margin-top:18px;flex-shrink:0}}
+.meso-summary-button{flex-shrink:0}
+#meso-summary-dialog{width:min(540px,calc(100% - 28px));background:#272e35;color:#e8f0f5;border:1px solid #6c8797}
+.meso-summary-body{padding:24px}.meso-summary-body .modal-heading{margin:-24px -24px 18px;padding:14px 20px}.meso-summary-body h2{margin:0;font-size:20px;color:#effaff}
+.meso-summary-description,.meso-summary-note{color:#b5c9d5;font-size:12px;line-height:1.8}.meso-summary-note{margin:16px 0 0}
+.meso-summary-totals{display:grid;gap:12px}.meso-summary-totals article{padding:18px;border:1px solid #587486;border-radius:6px;background:linear-gradient(135deg,#354852,#293943)}.meso-summary-totals p{margin:0 0 8px;font-size:13px;color:#d5e6ee}.meso-summary-totals strong{display:block;color:#75e0a3;font-size:23px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}#meso-lifetime-income{color:#b6ff00}#meso-lifetime-expense{color:#ff526e}.meso-summary-totals span{display:block;margin-top:8px;font-size:11px;color:#acc1cc}
+@media(max-width:850px){.meso-summary-button{margin-top:7px;min-height:44px;justify-content:center}.meso-summary-body{padding:20px}.meso-summary-body .modal-heading{margin:-20px -20px 16px}}
+
+.meso-summary-totals .meso-net-card{border-color:#37cce8;background:linear-gradient(135deg,#254a5b,#203541);box-shadow:inset 0 1px #67e6ff33}
+#meso-lifetime-net{color:#39e4ff}#meso-lifetime-net[data-balance="negative"]{color:#ff526e}#meso-lifetime-net[data-balance="zero"],#meso-lifetime-net[data-balance="unknown"]{color:#e8f0f5}
+
+
 #record-form{padding:28px}
 #record-form .modal-heading{margin-left:-28px;margin-right:-28px;margin-top:-28px}
 #record-form .form-grid,#expense-form .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -172,3 +185,33 @@
 :is(#record-form .form-grid .boss-selection .boss-field,#expense-form .form-grid .expense-category-field){font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;line-height:1.5}
 :is(#record-form .form-grid .boss-selection .boss-field,#expense-form .form-grid .expense-category-field) select[name]{font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:500;line-height:1.5;height:44px;min-height:44px;padding:10px 12px;background:#263c48;border:1px solid #91bac9;border-radius:4px;color:#fff;box-shadow:none}
 #record-form .form-grid .boss-selection .boss-field select[name]:disabled{color:#aebbc5;border-color:#607482}
+
+#meso-summary-dialog{width:min(860px,calc(100% - 28px));max-height:calc(100dvh - 24px);overflow-y:auto}
+.meso-summary-periods{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.meso-summary-periods button{padding:10px 6px;background:#354650;border:1px solid #647d8c;border-radius:5px;color:#d8e8f1;font:inherit;font-size:13px;cursor:pointer}
+.meso-summary-periods button[aria-pressed="true"]{background:#254a5b;border-color:#39e4ff;color:#7fffff;font-weight:700}
+.meso-summary-date-label input:disabled{opacity:.5}
+.meso-summary-body{padding:18px}.meso-summary-body .modal-heading{margin:-18px -18px 14px}
+.meso-summary-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;color:#acc1cc;font-size:12px}
+.meso-summary-date-label{display:flex;align-items:center;gap:12px;color:#d5e6ee;font-size:13px}
+.meso-summary-date-label input{width:auto;padding:6px 10px;background:#263c48;color:#fff;border:1px solid #647d8c;border-radius:4px;color-scheme:dark}
+.meso-summary-panels{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.meso-period-panel{min-width:0;border:1px solid #587486;border-radius:6px;background:#293943;padding:16px}
+.meso-period-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:10px}
+.meso-period-heading h3{margin:0;color:#e8faff;font-size:15px;white-space:nowrap}.meso-period-heading>span{font-size:11px;color:#acc1cc;text-align:right}
+.meso-period-content{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:12px}
+.meso-period-left{display:flex;flex-direction:column;gap:8px;min-width:0}
+.meso-count{display:flex;align-items:center;gap:10px;padding:6px 10px;background:#303f49;border:1px solid #506672;border-radius:5px}
+.meso-count>img{width:32px;height:32px;object-fit:contain;image-rendering:pixelated;flex-shrink:0}
+.meso-count p{margin:0 0 3px;font-size:12px;line-height:18px;color:#d5e6ee}.meso-count strong{font-size:18px;line-height:22px;color:#fff}
+.meso-period-ranking{margin-top:2px}.meso-period-ranking h4{margin:0 0 4px;font-size:12px;color:#d5e6ee}
+.meso-period-ranking ol{list-style:none;margin:0;padding:0}.meso-period-ranking li{display:flex;justify-content:space-between;align-items:baseline;gap:6px;padding:7px 0;border-top:1px solid #465e6b;font-size:11px;line-height:18px}.meso-period-ranking li>span{overflow-wrap:anywhere}.meso-period-ranking li>strong{max-width:55%;text-align:right}
+.meso-period-ranking b{color:#ffcc00;margin-right:5px}.meso-period-ranking strong{color:#ff9393;font-size:12px;overflow-wrap:anywhere}
+.meso-period-money{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:8px;min-width:0}
+.meso-money-card{display:flex;flex-direction:column;justify-content:center;padding:14px;background:linear-gradient(135deg,#354852,#293943);border:1px solid #587486;border-radius:5px}
+.meso-money-card p{display:flex;align-items:center;gap:8px;margin:0 0 4px;font-size:12px;line-height:20px;color:#d5e6ee}.meso-money-card img{width:20px;height:20px;object-fit:contain;image-rendering:pixelated}
+.meso-money-card strong{font-size:19px;line-height:1.5;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;color:#b6ff00}
+.meso-money-card.expense strong{color:#ff526e}.meso-money-card.net{background:#254a5b;border-color:#37cce8}.meso-money-card.net strong{color:#39e4ff}.meso-money-card.net[data-balance="negative"] strong{color:#ff526e}.meso-money-card.net:is([data-balance="zero"],[data-balance="unknown"]) strong{color:#e8f0f5}
+.meso-summary-note{margin-top:10px;font-size:11px}
+@media(max-width:900px){.meso-summary-panels{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:450px){.meso-summary-body{padding:12px}.meso-summary-body .modal-heading{margin:-12px -12px 12px}.meso-summary-toolbar{flex-wrap:wrap}.meso-period-panel{padding:10px}.meso-period-content{gap:8px}.meso-period-heading{align-items:flex-start}.meso-money-card{padding:8px}.meso-money-card strong{font-size:15px}.meso-count{gap:6px;padding:8px 6px}.meso-count>img{width:28px;height:28px}}

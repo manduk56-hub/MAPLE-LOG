@@ -406,3 +406,82 @@ function refreshCharacterSuggestions() {
   const names = new Set(records.map(record => record.character.trim()).filter(Boolean));
   $('#character-suggestions').innerHTML = [...names].sort((a, b) => a.localeCompare(b, 'ko')).map(name => `<option value="${escapeHtml(name)}"></option>`).join('');
 }
+
+function mesoPeriod(period, date) {
+  if (period === 'all') return { start: '1900-01-01', end: '9999-12-31', label: '전체 기간' };
+  if (period === 'week') {
+    const week = mapleWeek(date);
+    return { ...week, label: `${week.start} ~ ${week.end} · 목~수` };
+  }
+  if (period === 'month') {
+    const [year, month] = date.split('-').map(Number);
+    return { start: `${date.slice(0, 7)}-01`, end: localDate(new Date(year, month, 0)), label: `${year}년 ${month}월` };
+  }
+  return { start: date, end: date, label: date };
+}
+function mesoAggregate(bosses, entries, start, end) {
+  const inPeriod = r => r.date >= start && r.date <= end;
+  const runs = bosses.filter(inPeriod), spending = entries.filter(inPeriod);
+  const cash = MapleExpense.totals(spending);
+  const income = periodIncome(runs, start, end) + cash.income;
+  const categories = new Map();
+  for (const entry of spending) {
+    const amount = entry.items.reduce((sum, item) => sum + (item.price > 0 ? BigInt(item.price) : 0n), 0n);
+    categories.set(entry.category, (categories.get(entry.category) || 0n) + amount);
+  }
+  const ranking = [...categories].filter(([, amount]) => amount > 0n)
+    .sort(([a, x], [b, y]) => x === y ? MapleExpense.categories.indexOf(a) - MapleExpense.categories.indexOf(b) : x > y ? -1 : 1)
+    .slice(0, 3);
+  return { runs: runs.length, items: runs.reduce((sum, r) => sum + r.items.length, 0), income, expense: cash.expense, ranking };
+}
+let mesoSummaryPeriod = 'all';
+function renderMesoSummary() {
+  let entries = null;
+  try {
+    if (!storageReady) throw new Error('boss-data');
+    entries = MapleExpense.read(window.MapleSystems).entries;
+  } catch { /* Preserve unreadable records and never present partial totals. */ }
+  const date = $('#meso-summary-date').value;
+  $('#meso-summary-date').disabled = mesoSummaryPeriod === 'all';
+  for (const button of document.querySelectorAll('[data-meso-period]')) {
+    button.setAttribute('aria-pressed', String(button.dataset.mesoPeriod === mesoSummaryPeriod));
+  }
+  $('#meso-summary-panels').innerHTML = [['day', '일 정산'], ['week', '주 정산'], ['month', '월 정산'], ['all', '전체 기간 정산']].filter(([period]) => period === mesoSummaryPeriod).map(([period, title]) => {
+    const range = mesoPeriod(period, date);
+    const result = entries === null ? null : mesoAggregate(records, entries, range.start, range.end);
+    const net = result ? result.income - result.expense : null;
+    const balance = net === null ? 'unknown' : net > 0n ? 'positive' : net < 0n ? 'negative' : 'zero';
+    const ranks = Array.from({ length: 3 }, (_, i) => {
+      const rank = result?.ranking[i];
+      return `<li><span><b>${i + 1}위</b> ${escapeHtml(result ? rank?.[0] || '기록 없음' : '확인 필요')}</span><strong>${rank ? mapleMoney(rank[1]) : '—'}</strong></li>`;
+    }).join('');
+    const cashCard = (key, label, value) => `<article class="meso-money-card ${key}" data-balance="${balance}"><p><img src="assets/meso.png" alt="">${label}</p><strong>${value}</strong></article>`;
+    return `<section class="meso-period-panel" aria-label="${title}">
+      <div class="meso-period-heading"><h3>${title}</h3><span>${range.label}</span></div>
+      <div class="meso-period-content"><div class="meso-period-left">
+        <article class="meso-count"><img src="assets/boss-count.png" alt=""><div><p>잡은 보스 수</p><strong>${result ? result.runs.toLocaleString('ko-KR') + ' 회' : '확인 필요'}</strong></div></article>
+        <article class="meso-count"><img src="assets/item-count.png" alt=""><div><p>획득 아이템 수</p><strong>${result ? result.items.toLocaleString('ko-KR') + ' 개' : '확인 필요'}</strong></div></article>
+        <div class="meso-period-ranking"><h4>소비량 1~3위</h4><ol>${ranks}</ol></div>
+      </div><div class="meso-period-money">
+        ${cashCard('income', '총수익', result ? mapleMoney(result.income) : '확인 필요')}
+        ${cashCard('expense', '총소비량', result ? mapleMoney(result.expense) : '확인 필요')}
+        ${cashCard('net', '순수익', net === null ? '확인 필요' : (net > 0n ? '+ ' : net < 0n ? '− ' : '') + mapleMoney(net < 0n ? -net : net))}
+      </div></div></section>`;
+  }).join('');
+}
+$('#open-meso-summary').addEventListener('click', () => {
+  if (!$('#meso-summary-date').value) $('#meso-summary-date').value = today;
+  renderMesoSummary();
+  $('#meso-summary-dialog').showModal();
+});
+$('#meso-summary-date').addEventListener('change', () => {
+  if (!MapleExpense.validDate($('#meso-summary-date').value)) $('#meso-summary-date').value = today;
+  renderMesoSummary();
+});
+$('#meso-summary-periods').addEventListener('click', event => {
+  const button = event.target.closest('[data-meso-period]');
+  if (!button) return;
+  mesoSummaryPeriod = button.dataset.mesoPeriod;
+  renderMesoSummary();
+});
+$('#close-meso-summary').addEventListener('click', () => $('#meso-summary-dialog').close());
